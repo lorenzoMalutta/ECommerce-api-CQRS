@@ -1,6 +1,7 @@
 ﻿using agrolugue_api.Domain.Commands.Requests.Product;
 using agrolugue_api.Domain.Commands.Responses.Products;
 using CQRS101.Common;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace agrolugue_api.Domain.Controllers
@@ -19,8 +20,8 @@ namespace agrolugue_api.Domain.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(CancellationToken cancellation,
-            [FromBody] CreateProductRequest command)
+        [Authorize(Roles = "common-user")]
+        public async Task<IActionResult> Create([FromBody] CreateProductRequest command, CancellationToken cancellation)
         {
             await _commandDispatcher.Dispatch<CreateProductRequest, CreateProductResponse>(command, cancellation);
 
@@ -28,8 +29,8 @@ namespace agrolugue_api.Domain.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index(CancellationToken cancellation,
-            [FromQuery] ReadProductRequest command)
+        [AllowAnonymous]
+        public async Task<IActionResult> Index([FromQuery] ReadProductRequest command, CancellationToken cancellation)
         {
             var response = await _queryDispatcher.Dispatch<ReadProductRequest, ReadProductResponse>(command, cancellation);
 

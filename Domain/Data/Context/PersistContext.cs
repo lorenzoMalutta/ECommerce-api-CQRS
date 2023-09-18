@@ -28,6 +28,6 @@ namespace agrolugue_api.Domain.Data.Context
                 .OnDelete(DeleteBehavior.Restrict);
         }
         public DbSet<Product> Products { get; set; }
-        public DbSet<User> Users { get; set; }
+        public DbSet<User> User { get; set; }
     }
 }

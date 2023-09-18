@@ -18,7 +18,7 @@ namespace agrolugue_api.Domain.Services.ProductServices.Create
         {
             Product product = new()
             {
-                DateTime = obj.DateTime,
+                DateTime = DateTime.UtcNow,
                 Name = obj.Name,
                 OwnerId = obj.OwnerId,
                 Price = obj.Price,

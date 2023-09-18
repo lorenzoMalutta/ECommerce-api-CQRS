@@ -11,10 +11,12 @@ namespace agrolugue_api.Domain.Handlers.UserHandler
     {
         private readonly SignInManager<User> _signInManager;
         private readonly ITokenServices _services;
-        public LoginUserHandler(SignInManager<User> signInManager, ITokenServices services)
+        private readonly UserManager<User> _userManager;
+        public LoginUserHandler(SignInManager<User> signInManager, ITokenServices services, UserManager<User> userManager)
         {
             _signInManager = signInManager;
             _services = services;
+            _userManager = userManager;
         }
 
         public async Task<LoginUserResponse> Handle(LoginUserRequest command, CancellationToken cancellation)
@@ -26,7 +28,9 @@ namespace agrolugue_api.Domain.Handlers.UserHandler
                 .Users
                 .FirstOrDefault(user => user.NormalizedUserName == command.UserName.ToUpper());
 
-            var token = _services.GenerateToken(user);
+            var roles = await _userManager.GetRolesAsync(user);
+
+            var token = _services.GenerateToken(user, roles);
 
             var response = new LoginUserResponse
             {

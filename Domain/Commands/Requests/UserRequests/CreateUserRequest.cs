@@ -8,7 +8,7 @@ namespace agrolugue_api.Domain.Commands.Requests.UserRequest
         public string UserName { get; set; }
         [Required]
         [MaxLength(100)]
-        [RegularExpression(@"^(?=.*[a-zA-Z0-9])", ErrorMessage = "A senha deve conter pelo menos um caractere alfanumérico.")]
+        [RegularExpression(@"^(?=.*[a-zA-Z0-9])(?=.*[^a-zA-Z0-9]).{8,}$", ErrorMessage = "The password must have at least one special character and alphanumeric characters")]
         public string Password { get; set; }
         [Required]
         [EmailAddress]

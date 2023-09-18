@@ -4,6 +4,6 @@ namespace agrolugue_api.Domain.Services.TokenServices
 {
     public interface ITokenServices
     {
-        public string GenerateToken(User user);
+        public string GenerateToken(User user, IList<string> roles);
     }
 }

@@ -14,8 +14,6 @@ namespace agrolugue_api.Domain.Commands.Requests.Product
         [Required]
         public decimal Price { get; set; }
         [Required]
-        public DateTime DateTime { get; set; }
-        [Required]
         public string OwnerId { get; set; }
     }
 }

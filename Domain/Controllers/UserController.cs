@@ -2,6 +2,7 @@
 using agrolugue_api.Domain.Commands.Responses.UserResponse;
 using agrolugue_api.Domain.Handlers.UserHandler;
 using CQRS101.Common;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace agrolugue_api.Domain.Controllers
@@ -20,8 +21,8 @@ namespace agrolugue_api.Domain.Controllers
         }
 
         [HttpPost("create")]
-        public async Task<IActionResult> Create(CancellationToken cancellation,
-           [FromBody] CreateUserRequest command)
+        [AllowAnonymous]
+        public async Task<IActionResult> Create([FromBody] CreateUserRequest command, CancellationToken cancellation)
         {
             await _commandDispatcher.Dispatch<CreateUserRequest, CreateUserResponse>(command, cancellation);
 
@@ -29,8 +30,8 @@ namespace agrolugue_api.Domain.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login(CancellationToken cancellation, [FromBody] 
-        LoginUserRequest command) 
+        [AllowAnonymous]
+        public async Task<IActionResult> Login([FromBody] LoginUserRequest command, CancellationToken cancellation) 
         {
             var token = await _commandDispatcher.Dispatch<LoginUserRequest, LoginUserResponse>(command, cancellation);
 
