@@ -1,4 +1,5 @@
 ﻿using agrolugue_api.Domain.Model;
+using agrolugue_api.Domain.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,13 +22,13 @@ namespace agrolugue_api.Domain.Data.Context
                 .HasForeignKey(p => p.OwnerId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            builder.Entity<Product>()
+            builder.Entity<Rent>()
                 .HasOne(p => p.UserRent)
                 .WithMany(u => u.RentedProducts)
-                .HasForeignKey(p => p.UserRentId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .HasForeignKey(p => p.UserRentId);
         }
         public DbSet<Product> Products { get; set; }
         public DbSet<User> User { get; set; }
+        public DbSet<Rent> Rent { get; set; }
     }
 }

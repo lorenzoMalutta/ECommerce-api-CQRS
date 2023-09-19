@@ -13,9 +13,11 @@ namespace agrolugue_api.Domain.Data.Repository.ProductRepository
             _context = context;
         }
 
-        public void Create(Product command)
+        public async Task<Product> Create(Product command)
         {
-            _context.Add(command);
+            await _context.AddAsync(command);
+
+            return command;
         }
 
         public void Delete(Product command)

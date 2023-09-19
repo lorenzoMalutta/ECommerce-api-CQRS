@@ -2,8 +2,10 @@
 {
     public interface ICommands<T>
     {
-        void Create(T command);
+        Task<T> Create(T command);
         void Update(T command);
         void Delete(T command);
+
+
     }
 }

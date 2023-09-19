@@ -14,7 +14,7 @@ namespace agrolugue_api.Domain.Services.ProductServices.Create
             _repository = repository;
         }
 
-        public CreateProductResponse Execute(CreateProductRequest obj)
+        public async Task<CreateProductResponse> Execute(CreateProductRequest obj)
         {
             Product product = new()
             {
@@ -25,7 +25,7 @@ namespace agrolugue_api.Domain.Services.ProductServices.Create
                 Description = obj.Description,
             };
 
-            _repository.Create(product);
+            await _repository.Create(product);
 
             var response = new CreateProductResponse
             {

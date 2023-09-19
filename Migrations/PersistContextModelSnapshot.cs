@@ -53,17 +53,9 @@ namespace agrolugue_api.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("numeric");
 
-                    b.Property<DateOnly>("RentDay")
-                        .HasColumnType("date");
-
-                    b.Property<string>("UserRentId")
-                        .HasColumnType("text");
-
                     b.HasKey("Id");
 
                     b.HasIndex("OwnerId");
-
-                    b.HasIndex("UserRentId");
 
                     b.ToTable("Products");
                 });
@@ -133,6 +125,36 @@ namespace agrolugue_api.Migrations
                         .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("agrolugue_api.Domain.Models.Rent", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTimeOffset>("RentDay")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTimeOffset>("RentDeadLine")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("UserRentId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("UserRentId");
+
+                    b.ToTable("Rent");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -275,12 +297,24 @@ namespace agrolugue_api.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.Navigation("Owner");
+                });
+
+            modelBuilder.Entity("agrolugue_api.Domain.Models.Rent", b =>
+                {
+                    b.HasOne("agrolugue_api.Domain.Model.Product", "Product")
+                        .WithMany("RentedProducts")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("agrolugue_api.Domain.Model.User", "UserRent")
                         .WithMany("RentedProducts")
                         .HasForeignKey("UserRentId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("Owner");
+                    b.Navigation("Product");
 
                     b.Navigation("UserRent");
                 });
@@ -334,6 +368,11 @@ namespace agrolugue_api.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("agrolugue_api.Domain.Model.Product", b =>
+                {
+                    b.Navigation("RentedProducts");
                 });
 
             modelBuilder.Entity("agrolugue_api.Domain.Model.User", b =>

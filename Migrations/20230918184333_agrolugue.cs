@@ -6,7 +6,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace agrolugue_api.Migrations
 {
-    public partial class product : Migration
+    public partial class agrolugue : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -166,10 +166,8 @@ namespace agrolugue_api.Migrations
                     Description = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     Price = table.Column<decimal>(type: "numeric", nullable: false),
                     DateTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    RentDay = table.Column<DateOnly>(type: "date", nullable: false),
                     IsRent = table.Column<bool>(type: "boolean", nullable: false),
-                    OwnerId = table.Column<string>(type: "text", nullable: false),
-                    UserRentId = table.Column<string>(type: "text", nullable: true)
+                    OwnerId = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -180,12 +178,34 @@ namespace agrolugue_api.Migrations
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Rent",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    RentDay = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    RentDeadLine = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    ProductId = table.Column<int>(type: "integer", nullable: false),
+                    UserRentId = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Rent", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Products_AspNetUsers_UserRentId",
+                        name: "FK_Rent_AspNetUsers_UserRentId",
                         column: x => x.UserRentId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Rent_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -231,8 +251,13 @@ namespace agrolugue_api.Migrations
                 column: "OwnerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Products_UserRentId",
-                table: "Products",
+                name: "IX_Rent_ProductId",
+                table: "Rent",
+                column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Rent_UserRentId",
+                table: "Rent",
                 column: "UserRentId");
         }
 
@@ -254,10 +279,13 @@ namespace agrolugue_api.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Products");
+                name: "Rent");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Products");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

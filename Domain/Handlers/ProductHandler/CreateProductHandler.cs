@@ -16,15 +16,20 @@ namespace agrolugue_api.Domain.Handlers.ProductHandler
             _unitOfWork = unitOfWork;
         }
 
-        public Task<CreateProductResponse> Handle(CreateProductRequest command, CancellationToken cancellation)
+        public async Task<CreateProductResponse> Handle(CreateProductRequest command, CancellationToken cancellation)
         {
             try
             {
-                var result = _services.Execute(command);
+                var res = await _services.Execute(command);
 
                 _unitOfWork.Commit();
 
-                return Task.FromResult(result);
+                var response = new CreateProductResponse{
+                    OwnerId = res.OwnerId,
+                    Id = res.Id,
+                };
+
+                return response;
             }
             catch (Exception ex)
             {

@@ -5,6 +5,6 @@ namespace agrolugue_api.Domain.Services.ProductServices.Create
 {
     public interface ICreateProductServices
     {
-        public CreateProductResponse Execute(CreateProductRequest obj);
+        public Task<CreateProductResponse> Execute(CreateProductRequest obj);
     }
 }

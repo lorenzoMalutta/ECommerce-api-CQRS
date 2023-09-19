@@ -21,6 +21,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.OpenApi.Models;
+using agrolugue_api.Domain.Data.Repository.RentRepository;
+using agrolugue_api.Domain.Services.RentServices.Create;
+using agrolugue_api.Domain.Commands.Requests.RentRequests;
+using agrolugue_api.Domain.Commands.Responses.RentResponses;
+using agrolugue_api.Domain.Handlers.RentHandler;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -38,6 +43,9 @@ builder.Services
     .AddDefaultTokenProviders();
 
 //Dependecy Injections
+builder.Services.AddTransient<ICommandHandler<CreateRentRequest, CreateRentResponse>, CreateRentHandler>();
+builder.Services.AddTransient<ICreateRentServices, CreateRentServices>();
+builder.Services.AddTransient<IRentRepositoryEF, RentRepositoryEF>();
 builder.Services.AddScoped<ICreateUserService, CreateUserService>();
 builder.Services.AddScoped<ICreateProductServices,  CreateProductServices>();
 builder.Services.AddTransient<IProductRepositoryEF, ProductRepositoryEF>();
