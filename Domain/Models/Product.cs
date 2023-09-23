@@ -1,5 +1,5 @@
 ﻿using agrolugue_api.Domain.Models;
-using System;
+using MongoDB.Bson;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -8,7 +8,7 @@ namespace agrolugue_api.Domain.Model
     public class Product
     {
         [Key]
-        public int Id { get; set; }
+        public string Id { get; set; } = ObjectId.GenerateNewId().ToString();
 
         [Required]
         [MaxLength(50)]

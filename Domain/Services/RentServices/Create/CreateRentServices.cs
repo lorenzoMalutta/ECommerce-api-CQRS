@@ -24,7 +24,7 @@ namespace agrolugue_api.Domain.Services.RentServices.Create
                 RentDeadLine = command.RentDeadLine,
             };
 
-            await _repository.Create(rent);
+            _repository.Create(rent);
 
             var response = new CreateRentResponse
             {

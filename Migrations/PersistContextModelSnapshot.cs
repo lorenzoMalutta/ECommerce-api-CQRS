@@ -24,11 +24,8 @@ namespace agrolugue_api.Migrations
 
             modelBuilder.Entity("agrolugue_api.Domain.Model.Product", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    b.Property<string>("Id")
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("DateTime")
                         .HasColumnType("timestamp with time zone");
@@ -37,9 +34,6 @@ namespace agrolugue_api.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
-
-                    b.Property<bool>("IsRent")
-                        .HasColumnType("boolean");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -138,6 +132,10 @@ namespace agrolugue_api.Migrations
                     b.Property<int>("ProductId")
                         .HasColumnType("integer");
 
+                    b.Property<string>("ProductId1")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<DateTimeOffset>("RentDay")
                         .HasColumnType("timestamp with time zone");
 
@@ -150,7 +148,7 @@ namespace agrolugue_api.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex("ProductId1");
 
                     b.HasIndex("UserRentId");
 
@@ -304,7 +302,7 @@ namespace agrolugue_api.Migrations
                 {
                     b.HasOne("agrolugue_api.Domain.Model.Product", "Product")
                         .WithMany("RentedProducts")
-                        .HasForeignKey("ProductId")
+                        .HasForeignKey("ProductId1")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

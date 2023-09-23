@@ -14,9 +14,9 @@ namespace agrolugue_api.Domain.Data.Repository.RentRepository
             _context = context;
         }
 
-        public async Task<Rent> Create(Rent command)
+        public Rent Create(Rent command)
         {
-            await _context.AddAsync(command);
+            _context.Add(command);
 
             return command;
         }
@@ -26,12 +26,12 @@ namespace agrolugue_api.Domain.Data.Repository.RentRepository
             throw new NotImplementedException();
         }
 
-        public ReadRentRequest FindById(int id)
+        public Task<ReadRentRequest> FindById(string id)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<ReadRentRequest> GetAll(int skip = 0, int take = 10)
+        public Task<IEnumerable<ReadRentRequest>> GetAll(int skip = 0, int take = 10)
         {
             throw new NotImplementedException();
         }

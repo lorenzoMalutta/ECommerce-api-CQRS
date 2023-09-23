@@ -1,21 +1,26 @@
 ﻿using agrolugue_api.Domain.Commands.Requests.Product;
+using agrolugue_api.Domain.Commands.Responses.Products;
 using agrolugue_api.Domain.Data.Context;
 using agrolugue_api.Domain.Model;
+using MongoDB.Bson;
+using MongoDB.Driver;
 
 namespace agrolugue_api.Domain.Data.Repository.ProductRepository
 {
     public class ProductRepositoryEF : IProductRepositoryEF
     {
         private readonly PersistContext _context;
+        private readonly ReadContext _readContext;
 
-        public ProductRepositoryEF(PersistContext context)
+        public ProductRepositoryEF(PersistContext context, ReadContext readContext)
         {
             _context = context;
+            _readContext = readContext;
         }
 
-        public async Task<Product> Create(Product command)
+        public Product Create(Product command)
         {
-            await _context.AddAsync(command);
+            _context.AddAsync(command);
 
             return command;
         }
@@ -25,14 +30,18 @@ namespace agrolugue_api.Domain.Data.Repository.ProductRepository
             _context.Remove(command);
         }
 
-        public ReadProductRequest FindById(int id)
+        public async Task<ReadProductResponse> FindById(string id)
         {
-            throw new NotImplementedException();
+            var product = await _readContext.Products.FindAsync(id);
+
+            return (ReadProductResponse)product;
         }
 
-        public IEnumerable<ReadProductRequest> GetAll(int skip = 0, int take = 10)
+        public async Task<IEnumerable<ReadProductResponse>> GetAll(int skip = 0, int take = 10)
         {
-            throw new NotImplementedException();
+            var product = await _readContext.Products.FindAsync(products => true);
+           
+            return (IEnumerable<ReadProductResponse>)product.ToList();
         }
 
         public void Update(Product command)

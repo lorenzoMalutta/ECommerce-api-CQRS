@@ -160,13 +160,11 @@ namespace agrolugue_api.Migrations
                 name: "Products",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Id = table.Column<string>(type: "text", nullable: false),
                     Name = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     Description = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     Price = table.Column<decimal>(type: "numeric", nullable: false),
                     DateTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    IsRent = table.Column<bool>(type: "boolean", nullable: false),
                     OwnerId = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
@@ -189,6 +187,7 @@ namespace agrolugue_api.Migrations
                     RentDay = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     RentDeadLine = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     ProductId = table.Column<int>(type: "integer", nullable: false),
+                    ProductId1 = table.Column<string>(type: "text", nullable: false),
                     UserRentId = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
@@ -201,8 +200,8 @@ namespace agrolugue_api.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Rent_Products_ProductId",
-                        column: x => x.ProductId,
+                        name: "FK_Rent_Products_ProductId1",
+                        column: x => x.ProductId1,
                         principalTable: "Products",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -251,9 +250,9 @@ namespace agrolugue_api.Migrations
                 column: "OwnerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Rent_ProductId",
+                name: "IX_Rent_ProductId1",
                 table: "Rent",
-                column: "ProductId");
+                column: "ProductId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Rent_UserRentId",

@@ -2,7 +2,7 @@
 {
     public interface IQueries<T>
     {
-        IEnumerable<T> GetAll(int skip = 0, int take = 10);
-        T FindById(int id);
+        Task<IEnumerable<T>> GetAll(int skip = 0, int take = 10);
+        Task<T> FindById(string id);
     }
 }

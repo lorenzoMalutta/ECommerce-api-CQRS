@@ -1,6 +1,6 @@
 ﻿namespace agrolugue_api.Domain.Commands.Responses.RentResponses
 {
-    public class ReadRentRequest
+    public class ReadRentResponse
     {
     }
 }

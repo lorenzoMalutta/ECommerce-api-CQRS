@@ -25,7 +25,7 @@ namespace agrolugue_api.Domain.Services.ProductServices.Create
                 Description = obj.Description,
             };
 
-            await _repository.Create(product);
+            _repository.Create(product);
 
             var response = new CreateProductResponse
             {
