@@ -27,9 +27,7 @@ using agrolugue_api.Domain.Commands.Requests.RentRequests;
 using agrolugue_api.Domain.Commands.Responses.RentResponses;
 using agrolugue_api.Domain.Handlers.RentHandler;
 using agrolugue_api.Domain.Services.ProductServices.ReadAll;
-using Hangfire;
 using agrolugue_api.Domain.Services.SyncDatabase;
-using Hangfire.MemoryStorage;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -50,7 +48,6 @@ builder.Services
 
 //Dependecy Injections
 builder.Services.AddScoped<ReadContext>();
-builder.Services.AddScoped<DataSynchronizationService>();
 builder.Services.AddScoped<IReadAllProductService, ReadAllProductService>();
 builder.Services.AddScoped<IQueryHandler<ReadProductRequest, ReadProductResponse>, ReadProductQueryHandler>();
 builder.Services.AddTransient<ICommandHandler<CreateRentRequest, CreateRentResponse>, CreateRentHandler>();
@@ -83,11 +80,6 @@ builder.Services.AddAuthentication(x =>
         ValidateIssuer = false,
         ValidateAudience = false,
     };
-});
-
-builder.Services.AddHangfire(config =>
-{
-    config.UseMemoryStorage(); // Use o armazenamento em memória para este exemplo
 });
 
 // Registro do serviço de sincronização
@@ -135,11 +127,6 @@ using (var scope = app.Services.CreateScope())
     var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
     await RoleInitializer.InitializeAsync(roleManager);
 }
-
-app.UseHangfireServer();
-app.UseHangfireDashboard();
-
-RecurringJob.AddOrUpdate<DataSynchronizationService>("sync-database", x => x.SynchronizeDataAsync(), Cron.MinuteInterval(1));
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

@@ -27,12 +27,12 @@ namespace agrolugue_api.Domain.Services.SyncDatabase
                 // Converter os objetos do PostgreSQL em objetos MongoDB (se necessário)
                 var mongoProducts = postgresProducts.Select(p => new Product
                 {
-                   DateTime = DateTime.Now,
-                   Description = p.Description,
-                   Id = p.Id,
-                   Name = p.Name,
-                   OwnerId = p.OwnerId,
-                   Price = p.Price
+                    DateTime = DateTime.Now,
+                    Description = p.Description,
+                    Id = p.Id,
+                    Name = p.Name,
+                    OwnerId = p.OwnerId,
+                    Price = p.Price
                 }).ToList();
 
                 // Inserir os objetos no MongoDB

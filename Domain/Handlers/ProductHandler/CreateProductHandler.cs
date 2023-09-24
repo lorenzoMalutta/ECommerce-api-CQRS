@@ -33,6 +33,7 @@ namespace agrolugue_api.Domain.Handlers.ProductHandler
             }
             catch (Exception ex)
             {
+                _unitOfWork.Rollback();
                 throw new Exception(" Unexpected Error: " + ex);
             }
         }

@@ -7,7 +7,6 @@ namespace agrolugue_api.Domain.ModelsQuery
     public class Rent
     {
         [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
 
         public DateTimeOffset RentDay { get; set; }
