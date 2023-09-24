@@ -22,22 +22,28 @@ namespace agrolugue_api.Domain.Handlers.UserHandler
         public async Task<LoginUserResponse> Handle(LoginUserRequest command, CancellationToken cancellation)
         {
             var result = await _signInManager.PasswordSignInAsync(command.UserName, command.Password, false, false);
-
-            var user = _signInManager
-                .UserManager
-                .Users
-                .FirstOrDefault(user => user.NormalizedUserName == command.UserName.ToUpper());
-
-            var roles = await _userManager.GetRolesAsync(user);
-
-            var token = _services.GenerateToken(user, roles);
-
-            var response = new LoginUserResponse
+            
+            if (result.Succeeded)
             {
-                Token = token
-            };
+                var user = _signInManager
+                    .UserManager
+                    .Users
+                    .FirstOrDefault(user => user.NormalizedUserName == command.UserName.ToUpper());
 
-            return response;
+                var roles = await _userManager.GetRolesAsync(user);
+
+                var token = _services.GenerateToken(user, roles);
+                
+                var response = new LoginUserResponse
+                {
+                    Token = token
+                };
+
+                return response;
+            } else
+            {
+                return null;
+            }
         }
     }
 }
