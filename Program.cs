@@ -34,8 +34,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddDbContext<PersistContext>(opts =>
 {
-    opts.UseNpgsql(builder.Configuration.GetConnectionString
-    ("DBConnection"));
+    opts.UseNpgsql(builder.Configuration["ConnectionStrings:DBConnection"]);
 });
 
 builder.Services.AddSingleton<ReadContext>();

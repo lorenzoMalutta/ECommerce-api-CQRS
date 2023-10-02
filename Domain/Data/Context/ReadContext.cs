@@ -12,7 +12,7 @@ namespace agrolugue_api.Domain.Data.Context
             var settings = MongoClientSettings.FromConnectionString(configuration["Mongo:ConnectionString"]);
             settings.ServerApi = new ServerApi(ServerApiVersion.V1);
             var client = new MongoClient(settings);
-            _mongo = client.GetDatabase("agrolugue");
+            _mongo = client.GetDatabase(configuration["DatabaseName"]);
         }
 
         public IMongoCollection<Product> Products => _mongo.GetCollection<Product>("Product");

@@ -5,6 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>agrolugue_api</RootNamespace>
+    <UserSecretsId>1613f2c4-cb20-4e7c-acae-617754f878b8</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

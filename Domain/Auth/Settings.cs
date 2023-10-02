@@ -2,11 +2,16 @@
 {
     public static class Settings
     {
-        private static readonly string Secret = "tRW6SIjlidobW5iZCWLJWvYE51cL9UhycBfzKIH8jW9X+jBvF5KVYCAGZBMg5fVV";
+        private static readonly IConfiguration _configuration;
+
+        static Settings()
+        {
+
+        }
         
         public static string Get()
         {
-            return Secret;
+            return _configuration["SymetricSecurityKey"];
         }
     }
 }
